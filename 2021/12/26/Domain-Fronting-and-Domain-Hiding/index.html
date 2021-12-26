@@ -10,6 +10,10 @@
 
     <!--Description-->
     
+        <meta name="description" content="# Domain Fronting and Domain Hiding
+Domain Fronting （T1090）https://attack.mitre.org/techniques/T1090/004/
+Domain fronting is a technique that involves">
+    
 
     <!--Author-->
     
@@ -18,7 +22,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Secfilter"/>
+        <meta property="og:title" content="Domain Fronting and Domain Hiding"/>
     
 
     <!--Open Graph Description-->
@@ -29,7 +33,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content="article" />
     
 
     <!--Page Cover-->
@@ -43,7 +47,7 @@
 
     <!-- Title -->
     
-    <title>Archives - Secfilter</title>
+    <title>Domain Fronting and Domain Hiding - Secfilter</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -132,9 +136,7 @@
 <div class="container">
 
     <!-- Main Content -->
-    
-
-<div class="row">
+    <div class="row">
     <div class="col-sm-12">
 
         <!--Title and Logo-->
@@ -142,43 +144,68 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
-            <h1 id="main-title" class="title">Archives</h1>
-        
     </div>
 </header>
 
-        <section class="main archive-container">
+        <section class="main">
             
-                <div class="archive-post">
-    <a href="/2021/12/26/First-Day-at-Hackthebox/">
-        <span class="archive-date">
-            Dec 2021
-        </span>
-        First Day at Hackthebox
-    </a>
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2021/12/26/Domain-Fronting-and-Domain-Hiding/">
+                Domain Fronting and Domain Hiding
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2021-12-26</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p>﻿# Domain Fronting and Domain Hiding</p>
+<h3 id="Domain-Fronting-（T1090）"><a href="#Domain-Fronting-（T1090）" class="headerlink" title="Domain Fronting （T1090）"></a>Domain Fronting （T1090）</h3><p><a target="_blank" rel="noopener" href="https://attack.mitre.org/techniques/T1090/004/">https://attack.mitre.org/techniques/T1090/004/</a></p>
+<p>Domain fronting is a technique that involves using different domain names in the Server Name Indication (SNI) field of the TLS header and the Host field of the HTTP host header.</p>
+<p>In certain circumstances this is normal and expected. For example, browsers can re-use persistent connections for any domain that is listed in the same SSL Certificate, and these are considered related domains. But in other cases, tools including malware can use this technique between completely unrelated domains to evade restrictions and blocks that can be imposed at the TLS/SSL layer.</p>
+<p>This circumvention technique disguises the true destination of the client’s message by rerouting the data through a content delivery network (CDN). SNI (Sever Name Indication) is an extension of TLS 1.2. As CDN use one IP to host multiple domains, SNI is used to identify which server on this IP the client want to connect, so the server could return the correct certificate. As show in the graph below, if the attacker put allowed.exampe in SNI of TLS, but put forbidden.example in HTTP header, the CDN will forward to traffic to forbidden.example. As the HTTP header is encrypted by TLS, security device such as firewall will only see a traffic goes to allewed.example, actually, the traffice goes to forbidden.example.</p>
+<p><img src="https://hackernoon.com/_next/image?url=https://cdn.hackernoon.com/images/xwRTMTtsfYNZdN4zVqQuYZcuZrs1-xv1y35oc.jpeg&w=3840&q=75" alt="image"></p>
+<p>In order to launch this attack, the attacker need to host forbidden.example in the same CDN with allowed.example. APT attack could abuse this method to evade detection. Currently, major CDN vendors have stopped domain fronting abused since 2015, google and amazon followed in 2018. </p>
+<h3 id="Domain-Hiding"><a href="#Domain-Hiding" class="headerlink" title="Domain Hiding"></a>Domain Hiding</h3><p>Domain Hiding could be regonized as a new version of Domain Fronting. Some CDN vendor (Cloudflare) support TLS1.3, which ESNI (Encrypted SNI) is a feature of TLS 1.3. The domain register could put a public key in DNS TXT records, and client will query the DNS to get the public key and encrypted the SNI with the public key, and then send with ClientHello packet. So the privacy of SNI has been protected. Below is the graph shows how ESNI works.</p>
+<p><img src="https://raw.githubusercontent.com/ulysses425/blog_images/main/image-20211225233954616.png" alt="image-20211225233954616"></p>
+<p>While the attacker could put both ESNI and SNI in the ClientHello Packet of TLS, the attacker could put a allowed.example in SNI, while put forbidden.example in ESNI and HTTP header. And send the ClientHello Packet to Clouldflare server, then the traffic will be forward to forbidden.example. This will achieve the goal of bypassing detection.</p>
+<p><img src="https://raw.githubusercontent.com/ulysses425/blog_images/main/image-20211225234104039.png" alt="image-20211225234104039"></p>
+<p>Notice that Clouldflare has a plan to replace ESNI with ECH, which will encrypt all packet of ClientHello as show in the picture below. Details will not be included in this blog.</p>
+<p><img src="https://raw.githubusercontent.com/ulysses425/blog_images/main/image-20211225234653549.png" alt="image-20211225234653549"></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/TTP/">#TTP</a> <a href="/tags/Technique/">#Technique</a> <a href="/tags/Network/">#Network</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
 </div>
-            
-                <div class="archive-post">
-    <a href="/2021/12/19/hello-world/">
-        <span class="archive-date">
-            Dec 2021
-        </span>
-        Hello World
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2021/12/26/Domain-Fronting-and-Domain-Hiding/">
-        <span class="archive-date">
-            Dec 2021
-        </span>
-        Domain Fronting and Domain Hiding
-    </a>
-</div>
-            
         </section>
+
     </div>
 </div>
+
 
 </div>
 
