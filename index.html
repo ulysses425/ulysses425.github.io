@@ -220,7 +220,7 @@
 <p>Run command “sudo -ll” to check which command the currently user could run as root.</p>
 <p><img src="https://raw.githubusercontent.com/ulysses425/blog_images/main/image-20211225000646324.png" alt="image-20211225000646324"></p>
 <p>As shown, I only have read and execution permission. And in access_backup.sh, it use gzip and date command.</p>
-<p><img src="C:\Users\ulysses\AppData\Roaming\Typora\typora-user-images\image-20211225000812904.png" alt="image-20211225000812904"></p>
+<p><img src="https://raw.githubusercontent.com/ulysses425/blog_images/main/image-20211225000812904.png" alt="image-20211225000812904"></p>
 <p>Let us try a path injection. In the current folder /home/m4lwhere, run the code below to add currently folder to PATH environment variable.</p>
 <p>export PATH=/home/m4lwhere/:$PATH</p>
 <p>Then add an executable “date”(or “gzip” file, as access_backup.sh would execute both gzip and date) file to the current folder. In “date” file, reverse shell will give control to my server.</p>
